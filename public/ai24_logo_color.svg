@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="191px" height="38px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 191 38"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <font id="FontID0" horiz-adv-x="655" font-variant="normal" style="fill-rule:nonzero" font-weight="600">
+	<font-face 
+		font-family="Gilroy SemiBold">
+	</font-face>
+   <missing-glyph><path d="M0 0z"/></missing-glyph>
+   <glyph unicode="2" horiz-adv-x="529"><path d="M30.9817 0l0 90.0004 244.038 249.015c59.309,59.309 88.9635,110.655 88.9635,153.996 0,33.9679 -10.1613,60.4703 -30.484,79.5073 -20.3227,18.9955 -46.1615,28.4932 -77.5165,28.4932 -58.6454,0 -101.987,-29.0324 -129.982,-87.0142l-97.0097 56.9864c22.0231,46.7007 53.0049,81.9958 93.0281,106.01 39.9818,24.0139 84.3184,36.0002 132.968,36.0002 61.3413,0 114.014,-19.3273 158.019,-57.9818 44.0048,-38.696 65.9865,-91.3276 65.9865,-158.019 0,-71.3367 -39.65,-147.319 -118.991,-227.987l-158.019 -158.019 290.034 0 0 -110.987 -461.034 0z"/></glyph>
+  </font>
+  <style type="text/css">
+   <![CDATA[
+    @font-face { font-family:"Gilroy SemiBold";src:url("#FontID0") format(svg)}
+    .fil0 {fill:none}
+    .fil5 {fill:#1940B0}
+    .fil3 {fill:#1940B0}
+    .fil6 {fill:#1940B0;fill-rule:nonzero}
+    .fil4 {fill:url(#id0)}
+    .fil1 {fill:url(#id1)}
+    .fil2 {fill:url(#id2)}
+    .fnt0 {font-weight:600;font-size:28.4778px;font-family:'Gilroy SemiBold'}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="24.7797" y1="29.4699" x2="28.1294" y2="19.5013">
+   <stop offset="0" style="stop-opacity:1; stop-color:#16A3FE"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#23C99D"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" xlink:href="#id0" x1="16.0395" y1="36.579" x2="27.853" y2="1.41733">
+  </linearGradient>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" xlink:href="#id0" x1="15.7631" y1="29.4699" x2="19.1128" y2="19.5013">
+  </linearGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <rect class="fil0" width="191.101" height="38.1011"/>
+  <g id="_2086392137360">
+   <path class="fil1" d="M0 38c3,-4 6,-7 12,-7l1 -3 -4 0 4 -7 2 0 1 -1 3 -6 1 -1 -1 -2 3 -5 3 5 -1 2 1 1 3 6 1 1 2 0 3 7 -4 0 2 3c6,0 9,3 12,7l-8 -14 1 -1 -2 -3 -1 -2 -2 0 -10 -18 -10 18 -2 0 -1 2 -2 3 1 1 -8 14z"/>
+   <polygon class="fil2" points="21,18 21,26 17,26 19,30 15,30 14,31 "/>
+   <polygon class="fil3" points="21,30 21,27 18,27 20,30 21,30 21,31 "/>
+   <polygon class="fil4" points="23,18 23,26 27,26 25,30 28,30 30,31 "/>
+   <polygon class="fil3" points="23,30 23,27 26,27 24,30 23,30 23,31 "/>
+   <polygon class="fil3" points="15,27 22,15 29,27 33,27 30,22 28,22 23,13 24,11 22,8 20,11 21,13 16,22 14,22 11,27 "/>
+  </g>
+  <g id="_2086392134416">
+   <polygon class="fil5" points="65,17 59,29 59,29 58,29 56,29 55,29 55,29 63,12 63,12 64,10 65,9 65,10 74,29 75,29 74,29 71,29 71,29 70,29 "/>
+   <g transform="matrix(0.999987 0 0 1 22.8485 10.4692)">
+    <text x="96" y="19"  class="fil5 fnt0">2</text>
+   </g>
+   <polygon class="fil6" points="165,23 165,29 162,29 162,26 152,26 152,23 161,9 165,9 155,23 162,23 162,9 165,9 "/>
+   <polygon class="fil5" points="94,9 97,9 97,9 97,10 97,29 97,29 97,29 94,29 94,29 94,29 94,10 94,9 "/>
+  </g>
+ </g>
+</svg>

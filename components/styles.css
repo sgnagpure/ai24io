@@ -1,0 +1,99 @@
+/* body */
+body {
+  width: 100%;
+  height: auto;
+}
+.heading-text{
+  font-size: 2rem;
+}
+.btn{
+  width:160px;
+  height:40px;
+}
+
+/* header */
+
+/* Form */
+.l-form {
+  width: 450px;
+  height: 476px;
+  margin-top: 30px;
+}
+
+.r-form {
+  width: 550px;
+  height: 650px;
+  margin-top: 60px;
+}
+
+.w-form {
+  width: 500px;
+  height: 452px;
+  margin-top: 60px;
+}
+.w-sec {
+  width: 428px; 
+  height: 46px;
+}
+
+.b-form {
+  margin-top: 80px;
+  width: 450px; 
+  height: 600px;
+}
+
+.form-field {
+  width: 300px;
+  height: 10px;
+  color:#fff;
+}
+.f-img{
+  width:100px;
+  height:100px;
+}
+.f-text{
+font-size: 0.10rem;
+}
+input:focus {
+  color: #fff;
+}
+input{
+  color: #cf1e1e;
+}
+@media screen and (max-width: 500px) {
+ .l-form, .form-field, .r-form, .b-form{
+    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+  .b-form{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .w-form{
+    width:100%;
+  }
+  .heading-text{
+    font-size: 1.5rem;
+  }
+  .f-img{
+    width:80px;
+    height:80px;
+  }
+  .btn{
+    width:80px;
+    height:30px;
+  }
+  input::placeholder {
+    font-size: 0.8rem;
+}
+.w-sec {
+  width: 228px; 
+  height: 76px;
+}
+.f-text{
+  font-size: 0.1rem;
+  }
+
+  .quill{
+    min-height: 200px;
+}
+}
