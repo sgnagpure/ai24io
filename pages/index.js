@@ -6,9 +6,14 @@ import Cover from '../components/Cover'
 import Link from 'next/link'
 import StructuredData from '../components/UserLayout/StructuredData'
 import { useRouter } from 'next/router'
+import SwiperCore, { Autoplay } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper-bundle.min.css'
 
+SwiperCore.use([Autoplay]);
 
 export default function Home() {
+
   const structuredData = {
 
     "@context": "https://schema.org",
@@ -24,6 +29,9 @@ export default function Home() {
     ]
 
   }
+
+
+ 
 
   const router = useRouter();
 
@@ -61,6 +69,34 @@ export default function Home() {
       <Navbar />
       <Cover />
       <StructuredData data={structuredData}/>
+
+
+      <section className={styles.tokenomicsSection} id="airdrop">
+        <h2 className={styles.tokenomicsHeader}>Airdrop</h2>
+        <div className={styles.airdrop}>
+        {/* <img className={styles.airdropimg} src="/AI24-OFFICIAL-LAUNCHED.png" alt="airdrop" /> */}
+
+        <Swiper
+  autoplay={{
+    delay: 3000,
+    disableOnInteraction: false,
+  }}
+>
+  <SwiperSlide>
+    <a href="https://crew3.xyz/c/ai24coin" target="_blank"><img className={styles.airdropimg} src="/AI24-OFFICIAL-LAUNCHED.png" alt="image 1" /></a>
+  </SwiperSlide>
+  <SwiperSlide>
+  <a href="https://crew3.xyz/c/ai24coin" target="_blank"><img className={styles.airdropimg} src="/OFFICIAL-LAUNCHED-2.png" alt="image 2" /></a>
+  </SwiperSlide>
+  {/* <SwiperSlide>
+    <img className={styles.airdropimg} src="/AI24-OFFICIAL-LAUNCHED.png" alt="image 3" />
+  </SwiperSlide> */}
+</Swiper>
+
+        </div>
+
+      </section>
+
       {/* feature-section-------- */}
       <section className={styles.featureSection}>
         <div className={styles.featureBlock}>
