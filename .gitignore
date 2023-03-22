@@ -4,13 +4,22 @@
 /node_modules
 /.pnp
 .pnp.js
+/.next
 
 # testing
 /coverage
 
 # production
 /build
-
+/out
+/pages
+/lib
+/Helpers
+/public/assets
+/public/footer
+/public/frontend
+/public/icons
+/public/cover-video.mp4
 # misc
 .DS_Store
 .env.local
