@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react'
 import swal from 'sweetalert2';
 import Front from '../../components/Userlayout';
 import Cookies from 'js-cookie';
-
 const dotenv = require("dotenv");
 dotenv.config();
 
 /*export async function getServerSideProps() {
-
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL+'users/settings', {
             method: 'POST',
             headers: {
@@ -32,7 +30,6 @@ async function buy_token(credentials) {
   })
     .then(data => data.json())
  }
-
  
 export default function Buytoken() {
   const [people, setData] = useState(null)
@@ -46,8 +43,7 @@ export default function Buytoken() {
   const [upi_showing,setUpiShowing] = useState(false);
   const [neft_showing,setNeftShowing] = useState(false);
   const [erc20_showing,setErc20Showing] = useState(false);
-  const [trc20_showing,setTrc20Showing] = useState(false);
-  
+  const [trc20_showing,setTrc20Showing] = useState(false);  
   const [trcImg, setTrcImg] = useState(null)
   const [ercImg, setErcImg] = useState(null)
   const [upiImg, setUpiImg] = useState(null)
@@ -61,17 +57,11 @@ export default function Buytoken() {
         'Content-Type': 'application/json'
       },
     }).then(response => response.json() )
-    setData(users.data);
-    console.log(users.data);
+    setData(users.data);    
     //setINR(users.data[2].evalue);
-
     setBusy(false);
-    console.log(users);
-  };
-
-  
+  };  
   getUsers();
-
   return () => {
     // this now gets called when the component unmounts
   };
@@ -104,13 +94,12 @@ useEffect(() => {
    
    // let accessToken = '';
      let id = 0;
-     let email ; 
-    
+     let email ;    
     const [amount, setAmount] = useState();
     const [tokens, setTokens] = useState();
     const [wallet_address, setAddress] = useState();
     const [method, setMethod]=useState(); 
-    const [pay, setPayOption]=useState();
+    const [pay, setPayOption]=useState('USDT');
     const[payupi,setPayUpi]=useState();
     const[payErc,setPayErc]=useState();
     const[payTrc,setPayTrc]=useState();
@@ -124,7 +113,7 @@ useEffect(() => {
       //  let arr = {'token':accessToken,'user_id':id};    
           const changeTokenValue = event => {
             event.preventDefault();
-            console.log(event.target.value);
+            
             let upval = 0;
             if(pay==='INR'){
               upval = event.target.value*people[2].evalue;
@@ -136,7 +125,7 @@ useEffect(() => {
 
          const changeAmountValue = event => {
             event.preventDefault();
-            console.log(event.target.value);
+            
             let upval = 0;
             if(pay==='INR'){
               upval = event.target.value/people[2].evalue;
@@ -206,9 +195,16 @@ useEffect(() => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    if(email==='' ||amount ===0 ||tokens ===0 || wallet_address===undefined || method===''){
+    if(email==='' ||amount ===0 ||tokens ===0 || method===''){
+
         swal.fire('Error',"Please fillup all required fields");
         return false;
+
+    }else if(method==='ERC20' || method==='TRC20'){
+      if(wallet_address==='' || wallet_address === undefined){
+        swal.fire('Error',"Please enter wallet address");
+        return false;  
+      }
     }
 
     const result = await buy_token({
@@ -220,10 +216,6 @@ useEffect(() => {
       id,
       pay
     });
-
-    
-
-
     if ('status' in result) {
       swal.fire("Success", result.message, "success", {
         timer: 2000,
@@ -276,20 +268,20 @@ useEffect(() => {
         <option value={"TRC20"}>TRC20</option>
     </select>
 
-  <div className=' inline-flex items-center justify-center border-2 rounded-3xl'>
-    <div className='container'>
+  <div className=' inline-flex items-center justify-center border-2 rounded-3xl' style={{ display: (upi_showing===false && neft_showing===false && erc20_showing===false  && trc20_showing===false ) ? "none" : "block" }}>
+    <div className='' style={{"textAlign":"center"}}>
 
-      <div className='flex items-center justify-start pl-7 py-5 UPI' style={{ display: (upi_showing ? 'block' : 'none') }}>
+      <div className='flex items-center justify-start py-5 UPI' style={{ display: (upi_showing ? 'block' : 'none') }}>
         <h3 className='text-lg font-medium'>UPI Id : </h3>
-          <h3 className='text-sm font-small'><b>UPI ID : {isPBusy ? '' : (payment.upi_id)}</b></h3>
+          <h3 style={{maxWidth: "250px" ,wordWrap: "break-word"}} className='items-center text-sm font-small'><b>UPI ID : {isPBusy ? '' : (payment.upi_id)}</b></h3>
           <button className='bg-gradient-to-b from-yellow-500 to-yellow-700 rounded-2xl pl-2 pr-2' type="button" onClick={() => copyText(payupi)}>{copy_content}</button>
           <br></br>
           <h3 className='text-lg font-medium'>Scan QRCode : </h3>
-          <img height="200" width="200" alt='QRCODE' src={upiImg}></img>
+          <img className='items-center' style={{"display":"initial !important"}} height="200" width="200" alt='QRCODE' src={upiImg}></img>
           
       </div>
 
-      <div className='flex items-center justify-start pl-7 py-5 NEFT' style={{ display: (neft_showing ? 'block' : 'none') }}>
+      <div className='flex items-center justify-start  py-5 NEFT' style={{ display: (neft_showing ? 'block' : 'none') }}>
           <p>Bank Name : {isPBusy ? '' : (payment.bank_name)}</p>
           <p>Account Name : {isPBusy ? '' : (payment.account_name)}</p>
           <p>Account Number : {isPBusy ? '' : (payment.account_num)}</p>
@@ -298,23 +290,23 @@ useEffect(() => {
           
       </div>
 
-      <div className='flex items-center justify-start pl-7 py-5 ERC20' style={{ display: (erc20_showing ? 'block' : 'none') }}>
+      <div className='flex items-center justify-start py-5 ERC20' style={{ display: (erc20_showing ? 'block' : 'none') }}>
           <h3 className='text-lg font-medium'>ERC20 Wallet : </h3>
-          <h3 className='text-sm font-small'><b>{isPBusy ? '' : (payment.erc_address)}</b></h3>
+          <h3 style={{marginLeft: "5%" ,maxWidth: "250px" ,wordWrap: "break-word"}} className='items-center text-sm font-small'><b>{isPBusy ? '' : (payment.erc_address)}</b></h3>
           <button className='bg-gradient-to-b from-yellow-500 to-yellow-700 rounded-2xl pl-2 pr-2' type="button" onClick={() => copyText(payErc)}>{copy_content}</button>
           <br></br>
           <h3 className='text-lg font-medium'>Scan QRCode : </h3>
-          <img height="200" width="200" alt='QRCODE' src={ercImg}></img>
+          <img className='items-center' style={{"display":"initial !important"}} height="200" width="200" alt='QRCODE' src={ercImg}></img>
           
       </div>
 
-      <div className='flex items-center justify-start pl-7 py-5  TRC20' style={{ display: (trc20_showing ? 'block' : 'none') }}>
+      <div className='flex items-center justify-start py-5  TRC20' style={{ display: (trc20_showing ? 'block' : 'none') }}>
       <h3 className='text-lg font-medium'>TRC20 Wallet : </h3>
-          <h3 className='text-sm font-small'><b>TRC20 Wallet : {isPBusy ? '' : (payment.trc_address)}</b></h3>
+          <h3 style={{marginLeft: "5%", maxWidth: "250px" ,wordWrap: "break-word"}} className='items-center text-sm font-small'><b> {isPBusy ? '' : (payment.trc_address)}</b></h3>
           <button className='bg-gradient-to-b from-yellow-500 to-yellow-700 rounded-2xl pl-2 pr-2' type="button" onClick={() => copyText(payTrc)}>{copy_content}</button>
           <br></br>
           <h3 className='text-lg font-medium'>Scan QRCode : </h3>
-          <img height="200" width="200" alt='QRCODE' src={trcImg}></img>          
+          <img className='items-center' style={{"display":"initial !important"}} height="200" width="200" alt='QRCODE' src={trcImg}></img>          
       </div>
       </div>
    </div>
@@ -349,7 +341,7 @@ useEffect(() => {
       <div className="form-field inline-flex items-center justify-start py-2.5 pl-6 pr-2.5 bg-green-300 bg-opacity-20 rounded-lg">
         <p className=" text-lg font-medium leading-10 text-center text-green-600">
       1 AI24 = 
-       { isBusy ? "" : (1/people[0].evalue) } Dollar 
+       { isBusy ? "" : (1/people[0].evalue).toFixed(5) } Dollar 
       </p>
     </div>
 

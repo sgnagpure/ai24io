@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import swal from 'sweetalert2';
 import Front from '../../../components/Front';
 import Script from 'next/script';
+import Link from 'next/link';
 
-export default function Blog({ setToken }) {
+const Tabs = () => {
+
     const [isBusy, setBusy] = useState(true)
     const [isPBusy, setPBusy] = useState(true)
     const [blog, setBlog] = useState(null)
+    //const [tabClass,setTabClass]=useState('hidden');
+    const [openTab, setOpenTab] = useState(111);
     
     const [category, setCategory] = useState(null)
     let categories=null;
@@ -14,8 +17,12 @@ export default function Blog({ setToken }) {
     let tabcontent = null;
 
 
-    async function getTabContent(id) {
+    async function getTabContent(id,i) {
       let ar = {"id":id}
+      setOpenTab(i);
+     // setTabClass('block');
+      console.log(i+"No VALUE");
+      console.log("WHE ARE HERE");
                     
       fetch(process.env.NEXT_PUBLIC_API_URL+'selected_blog', {
         method: 'POST',
@@ -23,6 +30,29 @@ export default function Blog({ setToken }) {
         'Content-Type': 'application/json'
         },
         body: JSON.stringify(ar)
+    }).then((response) => {
+        if(!response.ok) throw new Error(response.status);
+        else return response.json();
+      })
+      .then((data) => {
+        if(data.status==='success'){
+          setBlog(data.data);
+        }
+      })
+      .catch((error) => {
+        console.log('error: ' + error);
+      });   
+     }
+
+     async function getTabContent2() {
+     setOpenTab(111);
+                    
+      fetch(process.env.NEXT_PUBLIC_API_URL+'display_blogs', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+      
     }).then((response) => {
         if(!response.ok) throw new Error(response.status);
         else return response.json();
@@ -50,13 +80,9 @@ export default function Blog({ setToken }) {
           },
         }).then(response => response.json() )
         setCategory(users.data);       
-        setBusy(false);
-        console.log(users);
+        setBusy(false);        
       };
-    
-      
       getUsers();
-    
       return () => {
         // this now gets called when the component unmounts
       };
@@ -73,7 +99,7 @@ export default function Blog({ setToken }) {
         }).then(response => response.json() )
         setBlog(users.data);
         setPBusy(false);
-        console.log(users);
+        
       }; 
       
       getUsers();
@@ -83,114 +109,161 @@ export default function Blog({ setToken }) {
       };
     }, []);
 
-    
-
     if(!isBusy){
         categories = category.length > 0
            && category.map((item, i) => {
+            
            return (
+
+            <li key={"li"+i} className="mr-2">
+                
+              <a
+                className={
+                  "inline-block text-white-500 hover:text-white-600 hover:border-gray-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-white-400 dark:hover:text-gray-300 " +
+                  (openTab === i
+                    ? "text-white bg-blueGray-600"
+                    : "text-blueGray-600 ")
+                }
+                onClick={e => {
+                  e.preventDefault();
+                  setOpenTab(i);
+                  getTabContent(item.id,i);
+                  
+                }}
+                data-toggle="tab"
+                href={'#link'+i}
+                role="tablist"
+              >
+                {item.cat_title}
+              </a>
+            </li>
            
-                <li className="mr-2" key={"li"+i} role="presentation">
-                    <button onClick={() => getTabContent(item.id)} className="inline-block hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300 " id={item.id+"-tab"} data-tabs-target={"#tab"+item.id} type="button" role="tab" aria-controls={item.id} aria-selected="false">{item.cat_title}</button>
-                </li>
-           
-             
            )
          }, this);
-           console.log(categories);
+           
          }
 
          if(!isPBusy){
             tabcontent = blog.length > 0  && blog.map((bitem, bi) => {
             return (
-                    <div className="max-w-sm border justify-center mt-4 items-center rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                        <a href={"/users/blog/"+bitem.slug} className='box-image'>
+                
+                    <div key={"tabcontent"+bi} className='max-w-sm border justify-center mt-4 items-center rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
+                        <Link as={"/users/blog/"+bitem.slug} href={"/users/blog/"+bitem.slug}><a className='box-image'>
                             <img className="rounded-t-lg" src={process.env.NEXT_PUBLIC_API_URL+"/blogs/"+bitem.image} alt="" />
-                        </a>
+                            </a></Link>
                         <div className="p-5">
-                            <a href={"/users/blog/"+bitem.slug}>
+                        <Link as={"/users/blog/"+bitem.slug} href={"/users/blog/"+bitem.slug}><a >
                                 <h5 className="mb-2 text-l font-bold tracking-tight dark:text-white">{bitem.title}</h5>
                             </a>
-                            <p className="mb-3 font-sm "><div dangerouslySetInnerHTML={{ __html: bitem.description.substring(0, 200) }} /></p>
-                            <a href={"/users/blog/"+bitem.slug} className="inline-flex items-center px-3 py-2 text-sm font-sm text-center text-white bg-yellow-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            </Link>
+                            <div className="mb-3 font-sm ">
+                              <div dangerouslySetInnerHTML={{ __html: bitem.description.substring(0, 200) }} />
+                            </div>
+                            <Link as={"/users/blog/"+bitem.slug} href={"/users/blog/"+bitem.slug}><a className="inline-flex items-center px-3 py-2 text-sm font-sm text-center text-white bg-yellow-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Read more
                                 <svg aria-hidden="true" className="w-2 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
-                            </a>
+                                </a>
+                            </Link>
                         </div>
                     </div>
+                  
                 )
             }, this);
         }
 
-    if(!isPBusy){
-    tabs = category.length > 0
-        && category.map((item, i) => {
-        return (
-        
-            <div key={"tabs-content"+i} className="p-4 rounded-lg dark:bg-gray-800 hidden"  id={"tab"+item.id} role="tabpanel" aria-labelledby={item.id+"-tab"}>
-                <div className='p-6 grid grid-cols-1 gap-4 sm:grid-cols-4'>
-                    {tabcontent}
-                </div>
-            </div>
-        
-            
-        )
-        }, this);
-        console.log(categories);
-        }
-
+        if(!isBusy){
+            tabs = category.length > 0
+                && category.map((item, i) => {
+                return (
+                
+                    
+                    <div key={"tabs-content"+i} className={openTab === i ? "block" : "hidden"} id={"link"+i} >
+                         <div className='p-6 grid grid-cols-1 gap-4 sm:grid-cols-4'> 
+                            {tabcontent}
+                        </div>  
+                    </div>
+                
+                    
+                )
+                
+                }, this);
+                
+                
+                }
+    
+  
   return (
     <>
+    <Front>
+    
     <link rel="stylesheet" href="https://unpkg.com/@themesberg/flowbite@1.2.0/dist/flowbite.min.css" />
-    <Script src="https://unpkg.com/@themesberg/flowbite@1.2.0/dist/flowbite.bundle.js"></Script>
-        <Front>
-        <section  className="items-center justify-center px-7 py-3 p-4 mx-auto md:max-w-none">
-            <div className='heading-text font-extrabold leading-10 text-center text-white'>
+   
+
+      <div className="">
+        <div className="items-center justify-center px-7 py-3 p-4 mx-auto md:max-w-none">
+      <div className='heading-text font-extrabold leading-10 text-center text-white'>
                 AI24 Blogs
             </div>
-            <div className='items-center justify-center px-7 py-3 p-4 mx-auto' style={{"max-width":"1150px"}} >
-    
-    <div  className="border-b border-gray-200 dark:border-gray-700 mb-4">
-        <ul className="flex flex-wrap -mb-px" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-            <li className="mr-2" role="presentation">
-                <button className="inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300 active" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">All</button>
+      <div className="items-center justify-center md:px-7 py-3 md:p-4 mx-auto" style={{maxWidth:"1250px"}}>
+        <div className="w-full">
+          <ul style={{borderBottom: "2px solid"}}
+            className="flex flex-wrap -mb-px"
+            role="tablist"
+          >
+            <li className="mr-2">
+              <a
+                className={
+                  "inline-block text-white-500 hover:text-white-600 hover:border-gray-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-white-400 dark:hover:text-gray-300 " +
+                  (openTab === 111
+                    ? "text-white bg-blueGray-600"
+                    : "text-blueGray-600 ")
+                }
+                onClick={e => {
+                  e.preventDefault();
+                  getTabContent2();
+                  
+                }}
+                data-toggle="tab"
+                href="#link111"
+                role="tablist"
+              >
+                All
+              </a>
             </li>
-            {categories}
            
-        </ul>
-    </div>
-    <div id="myTabContent">
-        <div className="p-4 rounded-lg dark:bg-gray-800 " id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
-                <img src='../../frontend/images/banner.png' alt="banner" />
-            
-                <div className="h-auto max-w-sm p-6 border border-gray-200 rounded-lg shadow dark:border-gray-700">
-                    <a  href="#">
-                        <h5 className="mb-2 text-2xl font-bold tracking-tight dark:text-white">Trading made easy for you!</h5>
-                    </a>
-                    <p className="mb-3 font-normal  dark:text-gray-400">Still, recently, there has been an argument that Bitcoin, due to its limited supply and deflationary nature, can serve as a store of value and an effective hedge against inflation. A deflationary currency has limited supply; as the supply reduces, it gains value over time...</p>
-                   
+
+            {categories}
+          </ul>
+          
+          <div className="relative flex flex-col min-w-0 break-words  w-full mb-6 shadow-lg rounded">
+            <div className="px-4 py-5 flex-auto">
+              <div className="tab-content tab-space">
+                <div className={openTab === 111 ? "p-4 rounded-lg dark:bg-gray-800 block" : "p-4 rounded-lg dark:bg-gray-800 hidden"} id="link111">
+                        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
+                            
+                        <img src='../../frontend/images/banner.png' alt="banner" />            
+                        <div className="h-auto max-w-sm p-6 border border-gray-200 rounded-lg shadow dark:border-gray-700">
+                            <a  href="#!">
+                                <h5 className="mb-2 text-2xl font-bold tracking-tight dark:text-white">Trading made easy for you!</h5>
+                            </a>
+                            <p className="mb-3 font-normal  dark:text-gray-400">Still, recently, there has been an argument that Bitcoin, due to its limited supply and deflationary nature, can serve as a store of value and an effective hedge against inflation. A deflationary currency has limited supply; as the supply reduces, it gains value over time...</p>                   
+                        </div>
+                    </div>
+                    <div className='p-6 grid grid-cols-1 gap-4 sm:grid-cols-4'>
+                        {tabcontent}
+                    </div>
                 </div>
-
-               
-
+                {tabs}
+              </div>
             </div>
-
-            <div className='p-6 grid grid-cols-1 gap-4 sm:grid-cols-4'>
-                    {tabcontent}
-                </div>
-
+          </div>
+          </div>
         </div>
-        
-        {tabs}
-    </div>
-
-   
-</div>
-        </section>
-        </Front>
+      </div>
+      </div>
+      </Front>
     </>
-  )
-}
+  );
+};
 
-
+export default Tabs;

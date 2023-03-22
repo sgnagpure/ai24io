@@ -1,74 +1,54 @@
 import {useRouter} from "next/router";
 import React, { useEffect, useState } from 'react'
 import Front from '../../../components/Front';
-import Script from 'next/script';
+import "react-quill/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
+export default function BlogDetail({blogers}) {
 
-
-export async function getStaticProps(context){
-  const {params} = context
-  const response = await fetch(process.env.NEXT_PUBLIC_API_URL+'blog_description', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body:JSON.stringify({"slug":params.slug}),
-  })
-
-    const resdata = await response.json();
-
-    return {
-      props : {
-        blog : resdata.data[0]
-      },
-    }
-
-}
-
-export async function  getStaticPaths(){
-  const response = await fetch(process.env.NEXT_PUBLIC_API_URL+'display_blogs', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-   
-  }).then(response => response.json() )
-  
- const datab = response.data;
-  const paths = datab.map(blog => {
-    return {      
-        params : {
-          slug : `${blog.slug}`
-        },   
-      
-      
-    }
-  })
-
-  return {
-    paths,
-    fallback : true,
-  }
-  
-
-}
-
-
-export default function BlogDetail(blog) {
-
+    const [blog ,setBlog] = useState(null)
     const [isBusy, setBusy] = useState(true)
     const [isPBusy, setPBusy] = useState(true)
     const [recent, setRecentBlog] = useState(null)
     const [formattedDate, setFormattedDate] = useState(null)
     const router = useRouter();
     const  myslug  = router.query.slug;
-    blog = blog.blog;
+  //  console.log(router.query);
+    // console.log(myslug);
+
+    useEffect(() => {
+      setBusy(true);
+    const getUsers = async () => {
+      const users = await fetch(process.env.NEXT_PUBLIC_API_URL+'blog_description', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body:JSON.stringify({"slug":router.query.slug}),
+      }).then(response => response.json() )
+      setBlog(users.data[0]); 
+      const date = new Date(users.data[0].created_date)
+            setFormattedDate(date.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+            }));     
+      setBusy(false);
+      
+    };
+  
     
-    
+    getUsers();
+  
+    return () => {
+      // this now gets called when the component unmounts
+    };
+  }, [router.isReady]);
    
       useEffect(() => {
-        setPBusy(true);       
-        
+        setPBusy(true);         
         let ar = {"slug":myslug};
             const getUsers = async () => {
             const users = await fetch(process.env.NEXT_PUBLIC_API_URL+'top_blogs', {
@@ -79,14 +59,9 @@ export default function BlogDetail(blog) {
             body:JSON.stringify(ar),
             }).then(response => response.json() )
             setRecentBlog(users.data);
-            const date = new Date(blog.created_date)
-            setFormattedDate(date.toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-            }));
+            
             setPBusy(false);
-            setBusy(false);
+            
       };
       getUsers();
       return () => {
@@ -94,9 +69,7 @@ export default function BlogDetail(blog) {
       };
     },[]);
 
-     if(router.isFallback){
-      return (<h1>Loading...</h1>);
-    }
+     
 
     let recentBlogContent = null;
 
@@ -104,7 +77,7 @@ export default function BlogDetail(blog) {
         recentBlogContent = recent.length > 0
         && recent.map((bitem, bi) => {
     return (
-        
+     
       <div key={bi} className="h-auto max-w-sm p-6 mt-5 rounded-lg shadow dark:border-gray-700">
       <img className="rounded-t-lg" src={process.env.NEXT_PUBLIC_API_URL+"/blogs/"+bitem.image} alt="" />
         <a  href={"/users/blog/"+bitem.slug}>
@@ -121,20 +94,29 @@ export default function BlogDetail(blog) {
         }, this);
     }
     
+  if(router.isFallback){
+      return (<h1>Loading...</h1>);
+    }
 
   return (
     <>
-    <link rel="stylesheet" href="https://unpkg.com/@themesberg/flowbite@1.2.0/dist/flowbite.min.css" />
-    <Script src="https://unpkg.com/@themesberg/flowbite@1.2.0/dist/flowbite.bundle.js"></Script>
-        <Front>
+     
+    <Front pageMeta={{
+          title : isBusy? "" : blog.meta_tags,
+          description:isBusy? "" : blog.meta_description
+        }
+
+        }>
+      
+     
         <section  className="items-center justify-center px-7 py-3 p-4 mx-auto md:max-w-none">
-            <div className='heading-text font-extrabold leading-10 text-center text-white'>
-            Trading made easy for you!
+            <div className='heading-text text-2xl font-extrabold leading-10 text-center text-white'>
+             {isBusy? "" :  blog.title} 
             </div>
             <div className='items-center justify-center px-7 py-3 p-4 mx-auto' style={{"maxWidth":"1150px"}} >
-            <section style={{"max-height":"350px"}} className="md:w-full md:h-screen">
+            <section style={{"maxHeight":"350px"}} className="md:w-full md:h-screen">
                     {isBusy ? "" : (
-                    <img  className="md:object-cover w-full h-full" src={process.env.NEXT_PUBLIC_API_URL+"/blogs/"+blog.image} alt="description"/> )}
+                    <img  className="md:object-cover w-full h-full" src={isBusy ? "" : process.env.NEXT_PUBLIC_API_URL+"/blogs/"+ blog.image} alt="description"/> )}
             </section>
             <div className="">
                 <div className='grid grid-cols-1 md:grid-cols-4 gap-4 '>
@@ -145,9 +127,13 @@ export default function BlogDetail(blog) {
                     <li className="mb-10 ml-4">
                         
                         <div className="absolute w-3 h-3 "></div>
-                        <time style={{"color":"#F3AC00"}} className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"> (formattedDate)</time>
+                        <time style={{"color":"#F3AC00"}} className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"> {formattedDate}</time>
                         <br/><br/>
-                        { isBusy ? "" : (<div dangerouslySetInnerHTML={{ __html:blog.description }} />)}
+                        { isBusy ? "" : (<ReactQuill
+   value={blog.description}
+   readOnly={true}
+   theme={"bubble"}
+/>)}
                     </li>
                 
                 </div>
@@ -173,6 +159,48 @@ export default function BlogDetail(blog) {
   )
 }
 
+
+export async function getStaticProps(context){
+  const {params} = context
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL+'blog_description', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body:JSON.stringify({"slug":params.slug}),
+  })
+    console.log("Generating page for /blog/"+params.slug);
+    const resdata = await response.json();
+    return {
+      props : {
+        blog : resdata.data[0]
+      },
+    }
+}
+
+export async function  getStaticPaths(){
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL+'display_blogs', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+   
+  }).then(response => response.json() )
+  
+ const datab = response.data; 
+  const paths = datab.map(blog => {
+    return {      
+        params : {
+          slug : `${blog.slug}`
+        }, 
+    }
+  })
+
+  return {
+    paths,
+    fallback:'blocking'
+  }
+}
 
 
 

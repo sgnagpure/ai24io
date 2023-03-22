@@ -12,6 +12,8 @@ const columns = [
         renderCell:(index) => index.api.getRowIndex(index.row.id)+1
     },    
     { field: 'amount', headerName: 'Amount', width: 100},
+    { field: 'method', headerName: 'Method', width: 100},
+    { field: 'type', headerName: 'Type', width: 100},
     { field: 'token', headerName: 'Token', width: 100},
     { field: 'wallet_address', headerName: 'Wallet', width: 200},
     { field: 'created_date', headerName: 'Date', width: 200},

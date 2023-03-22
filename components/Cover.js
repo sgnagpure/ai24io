@@ -13,7 +13,29 @@ let tokenImageUrl_;
 let percentage_;
 
 
+
 const MyComponent = () => {
+    const [isBusy, setBusy] = useState(true)
+    const [settings, setSettings] = useState(null)
+    useEffect(() => {
+        setBusy(true);
+        const getBankDetails = async () => {
+          const banks = await fetch(process.env.NEXT_PUBLIC_API_URL+'users/settings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }).then(response => response.json() )
+          setSettings(banks.data);
+         
+          setBusy(false);
+        };
+      
+        getBankDetails();
+        return () => {
+          // this now gets called when the component unmounts
+        };
+      }, []);
 
     let tokenData = {
         "id": "1",
@@ -696,6 +718,8 @@ const MyComponent = () => {
         alert("Address Copied to Clipboard");
     }
 
+    
+
 
     return (
         <>
@@ -743,7 +767,7 @@ const MyComponent = () => {
 
 
                         <div className={styles.rateBlockPrime}>
-                            <p className={styles.currencyToToken}>1 BNB = <span id="rate">1000</span> {tokenData.tokenSymbol}</p>
+                            <p className={styles.currencyToToken}>1 BNB = <span id="rate">{isBusy? "" : (settings[1].evalue)}</span> {tokenData.tokenSymbol}</p>
                         </div>
                         <div className={styles.barBlockPrime}>
                             <div className={styles.upperStatLine}>

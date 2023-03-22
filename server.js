@@ -8,14 +8,14 @@ const { createProxyMiddleware } = require("http-proxy-middleware")
 
 const dev =  process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
-const port = 3001
+const port = 3002
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
 
 const apiPaths = {
     '/api': {
-        target: 'http://localhost:3080', 
+        target: 'https://ai24coin.in/', 
         pathRewrite: {
             '^/api': '/api'
         },

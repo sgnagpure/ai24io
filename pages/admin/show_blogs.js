@@ -4,6 +4,7 @@ import Layout from '../../components/Layout';
 import Auth from '../../components/AdminAuth';
 import 'react-quill/dist/quill.snow.css';
 import Swal from 'sweetalert2';
+import Link from 'next/link';
 
 
 
@@ -100,21 +101,28 @@ const columns = [
         filterable: false,
         renderCell:(index) => index.api.getRowIndex(index.row.id)+1
     },
+
     { field: 'title', headerName: 'Title' , width: 100 , renderCell: (params) => {
             
-        if(params.row.image!==''){
+       
          return (
              <div>
                  {params.row.title}
              </div>
          );
-        }
-       
-   }
-        
+        },
     },
-    { field: 'description', headerName: 'Description', width: 500, renderCell : (params)=>{
 
+    { field: 'meta_tags', headerName: 'Metatags' , width: 250 , renderCell: (params) => {                  
+          return (
+              <div>
+                  {params.row.meta_tags}
+              </div>
+          );
+      },
+    },
+
+    { field: 'description', headerName: 'Description', width: 500, renderCell : (params)=>{
         return(
             <div>
             Your input text
@@ -122,8 +130,8 @@ const columns = [
             </div>
         );
 
-
     }},
+
     { field: 'image', headerName: 'Image', width: 100, renderCell: (params) => {
             
         if(params.row.image!==''){
@@ -146,14 +154,14 @@ const columns = [
                 return (
                     <div>
                         <button onClick={() => deactive_request(params.row.id)} className='btn btn-sm btn-danger'>Deactivate</button>
-                        <a href={"/admin/blog/"+params.row.id} className='btn btn-sm btn-warning'>Edit</a>
+                        <Link as={`/admin_blog/edit?id=${params.row.id}`} href={`/admin_blog/edit?id=${params.row.id}`}><a className='btn btn-sm btn-warning'>Edit</a></Link>
                     </div>
                 );
                }else{
                 return (
                     <div>
                         <button onClick={() => active_request(params.row.id)} className='btn btn-sm btn-success'>Activate</button>
-                        <a href={"/admin/blog/"+params.row.id} className='btn btn-sm btn-warning'>Edit</a>
+                        <a href={"/admin_blog/edit?id="+params.row.id} className='btn btn-sm btn-warning'>Edit</a>
                     </div>
                 );
                }

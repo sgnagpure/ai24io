@@ -29,7 +29,7 @@ function Navbar() {
                     <div className={styles.logoSection} style={{"flex":"0.5"}}>
                         <Link href=""><a>
                             {/* <h1 className={styles.logoText}>Globus Coin</h1> */}
-                            <img src="/ai24_logo.svg" alt="AI24 Logo" className={styles.logoImage} />
+                            <img src="/logo_ver_wht.png" alt="AI24 Logo" className={styles.logoImage} />
                         </a></Link>
                     </div>
                     <div className={styles.menuSection}>

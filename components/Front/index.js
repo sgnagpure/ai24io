@@ -1,127 +1,70 @@
  import Head from "next/head";
- 
- function Front({ children }) {
+import { useRouter } from "next/router";
+ import Footer from "../UserLayout/Footer";
+import StructuredData from "../UserLayout/StructuredData";
 
-    const Footer = () => {
-        return <>
-       <footer
-  className=" text-center  dark:text-neutral-200 lg:text-left">
+function Front({ children,pageMeta }) {
+  const router = useRouter();
+  const meta = {
+    title : "Ai24 - Blockchain-based platform | Buy Ai24 Crypto Coin",
+          description :  "Explore and invest in Ai24 crypto coin. Get in touch to know upcoming presale crypto coin prices, also get the latest crypto coin market news.",
+    type :"website",
+    ...pageMeta
+  }
+  const hasClass = (el, className) => el.classList.contains(className);
+
+  function remove_hidden ()
+  {          
+    if(hasClass(document.querySelector('.menu-child'), 'hidden')){ // true){           
+        document.querySelector('.menu-child').classList.remove('hidden');
+    }else{            
+      document.querySelector('.menu-child').classList.add('hidden');
+    }          
+  }
   
-  <div className=" pr-20 mx-6 py-10 text-center md:text-left">
-    <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-      <div className="object-center">
-      <img className="mx-auto" style={{"maxWidth": "100px"}} alt="logo" src="../../logo.png" />
-       
-      </div>
-      <div className="">
-        <h6
-          className="mb-4 flex justify-center font-semibold md:justify-start">
-          Quick Links
-        </h6>
-        <p className="mb-3 text-sm">
-          <a href="/#presale" className=""
-            >Presale</a
-          >
-        </p>
-        <p className="mb-3 text-sm">
-          <a href="#!" className="text-sm"
-            >Stack (Comming Soon)</a
-          >
-        </p>
-        <p className="mb-3 text-sm">
-          <a href="/#about" className=""
-            >About</a
-          >
-        </p>
-        <p className="mb-3 text-sm">
-          <a href="/#contact" className=""
-            >For Inquiry</a
-          >
-        </p>
-        <p className="mb-3 text-sm">
-          <a href="#!" className=""
-            >Preinfosales</a
-          >
-        </p>
+  const Nav = () => {
+        const structuredData = {
 
-      </div>
-      <div className="">
-        <h6
-          className="mb-4 flex justify-center font-semibold md:justify-start">
-         Resources
-        </h6>
-        <p className="mb-3 text-sm">
-          <a href="#!" className=""
-            >Download Whitepaper</a
-          >
-        </p>
-        <p className="mb-3 text-sm">
-          <a href="#!" className="text-sm"
-            >Whitepaper</a
-          >
-        </p>
-        <p className="mb-3 text-sm">
-          <a href="#!" className=""
-            >BSC Scan</a
-          >
-        </p>
-        <p className="mb-3 text-sm">
-          <a href="#!" className=""
-            >Cryoto Api</a
-          >
-        </p>
-        <p className="mb-3 text-sm">
-          <a href="#!" className=""
-            >Interest</a
-          >
-        </p>
-      </div>
-      <div>
-        
-        <p className="mb-4 text-xl flex items-center justify-center md:justify-start">
-          We accept following payment systems
-        </p>
-        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-      <div className="mb-6 lg:mb-0">
-        <img className="mx-auto" alt="visa" src="../../visa.png" />
-        </div>
-        <div className="mb-6 lg:mb-0">
-        <img className="mx-auto" alt="visa" src="../../master.png" />
-        </div>
-        <div className="mb-6 lg:mb-0">
-        <img className="mx-auto" alt="visa" src="../../bitcoin.png" />
-        </div>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-  
-</footer>
-      </>
-      
-      };
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Ai 24",
+          "url": "https://ai24.io/",
+          "logo": "https://ai24.io/ai24_logo.svg",
+          "sameAs": [
+            "https://www.facebook.com/ai24coin/",
+            "https://www.instagram.com/ai24coin/",
+            "https://twitter.com/ai24coin",
+            "https://ai24.io/"
+          ]
 
-      const Nav = () => {
+        }
+
         return <>
         
-        <Head> <title>AI24</title>
+        <Head> <title>{meta.title}</title>
+          <meta name="description" content={meta.description}></meta>
+          <link rel="shortcut icon" href="../../logo.png" />
+          <meta property="og:url" content={"https://ai24.io/"+router.asPath}></meta>
+          <meta property="og:type" content={meta.type}></meta>
+          <meta property="og:site_name" content="AI24"></meta>
+          <meta property="og:description" content={meta.description}></meta>
+          <meta property="og:title" content={meta.title}></meta>          
           <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css"/>        
           <link href="https://fonts.googleapis.com/css?family=Manrope&display=swap" rel="stylesheet"/>
-          <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet"/>
-          <link href="../../frontend/styles.css" rel="stylesheet" />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="../../frontend/navbar.js"></script>
-        <script src="../../frontend/custome.js"></script>
-        <link rel="shortcut icon" href="../../logo.png" />
+          <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet"/>          
+          <script src="https://cdn.tailwindcss.com"></script>
+          <script src="../../frontend/custome.js"></script>
+          <link href="../../../frontend/styles.css" rel="stylesheet" />   
+                
         </Head>
+        <StructuredData data={structuredData}/>
         <section className="">
           <nav className="relative px-4 py-4 flex justify-between items-center ">
-            <a className="text-3xl font-bold leading-none" href="/">
-              <img alt="logo" src="../../ai24_logo.svg"></img>
+            <a className="text-xl font-bold leading-none" href="/">
+              <img style={{"width":"150px !important"}} alt="logo" src="/logo_ver_wht.png"></img>
             </a>
             <div className="lg:hidden">
-              <button className="navbar-burger flex items-center text-blue-600 p-3">
+              <button onClick={e => remove_hidden()} className="navbar-burger flex items-center text-blue-600 p-3">
               <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <title>Mobile menu</title>
                   <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
@@ -274,14 +217,14 @@
               Sign up
             </a>
           </nav>
-          <div className="navbar-menu relative z-50 hidden">
+          <div className="menu-child navbar-menu relative z-50 hidden">
             <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25" />
             <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
               <div className="flex items-center mb-8">
-                <a className="mr-auto text-3xl font-bold leading-none" href="/">
-                  <img alt="logo" src="../../ai24_logo.svg" />
+                <a className="mr-auto text-xl font-bold leading-none" href="/">
+                  <img style={{"width":"150px !important"}} alt="logo" src="/logo_ver_wht.png" />
                 </a>
-                <button className="navbar-close">
+                <button onClick={e=> remove_hidden()} className="navbar-close">
                   <svg
                     className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
                     xmlns="http://www.w3.org/2000/svg"
@@ -343,6 +286,14 @@
                   <li className="mb-1">
                     <a
                       className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded"
+                      href="/blog"
+                    >
+                      Blogs
+                    </a>
+                  </li>
+                  <li className="mb-1">
+                    <a
+                      className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded"
                       href="/#contact"
                     >
                       Contact
@@ -362,11 +313,7 @@
 
 
 return (
-  <>
-       
-
-       <Nav/>
-        
+  <><Nav/>        
                  {children}         
                  <Footer></Footer>  
       

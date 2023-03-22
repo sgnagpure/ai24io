@@ -117,6 +117,7 @@ export default function Register({ setToken }) {
   }
   return (
     <>
+    
       <Front>
         <form className="pt-3" onSubmit={handleSubmit}>
             <section className=" flex justify-center">

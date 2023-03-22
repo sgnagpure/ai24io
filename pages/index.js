@@ -4,27 +4,63 @@ import styles from '../styles/Home.module.css'
 import Navbar from '../components/Navbar'
 import Cover from '../components/Cover'
 import Link from 'next/link'
+import StructuredData from '../components/UserLayout/StructuredData'
+import { useRouter } from 'next/router'
+
 
 export default function Home() {
+  const structuredData = {
+
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Ai 24",
+    "url": "https://ai24.io/",
+    "logo": "https://ai24.io/ai24_logo.svg",
+    "sameAs": [
+      "https://www.facebook.com/ai24coin/",
+      "https://www.instagram.com/ai24coin/",
+      "https://twitter.com/ai24coin",
+      "https://ai24.io/"
+    ]
+
+  }
+
+  const router = useRouter();
+
+  const meta = {
+    title : "Ai24 - Blockchain-based platform | Buy Ai24 Crypto Coin",
+    description :  "Explore and invest in Ai24 crypto coin. Get in touch to know upcoming presale crypto coin prices, also get the latest crypto coin market news.",
+    type :"website",
+   
+  }
+  //content = content.settings;
+
   return (
     <>
       <Head>
-        <title>
-          AI24 Coin
-        </title>
         <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"></link>
-        <meta name="description" content="AI24 Coin is a blockchain-based platform that brings together the best of
-          AI, machine learning and blockchain technology" />
+        <title>{meta.title}</title>
+          <meta name="description" content={meta.description}></meta>
+          <link rel="shortcut icon" href="../../logo.png" />
+          <meta property="og:url" content={"https://ai24.io/"+router.asPath}></meta>
+          <meta property="og:type" content={meta.type}></meta>
+          <meta property="og:site_name" content="AI24"></meta>
+          <meta property="og:description" content={meta.description}></meta>
+          <meta property="og:title" content={meta.title}></meta>
+
         <meta name="google-site-verification" content="uEOnO-hOq4AVNMAEpW4fAp50xRLi0Mmow0UmYVtQSEs" />
+        
         <link rel="apple-touch-icon" sizes="180x180" href="/logo.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/logo.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/logo.png" />
         <link rel="manifest" href="/icons/site.webmanifest" />
         <link rel="icon" href="/logo.png" />
+
+       
       </Head>
       <Navbar />
       <Cover />
-
+      <StructuredData data={structuredData}/>
       {/* feature-section-------- */}
       <section className={styles.featureSection}>
         <div className={styles.featureBlock}>

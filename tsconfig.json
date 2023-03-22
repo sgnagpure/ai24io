@@ -16,6 +16,7 @@
     "module": "esnext",
     "isolatedModules": true,
     "jsx": "preserve",
+    "moduleResolution": "node",
     "resolveJsonModule": true
   },
   "include": [
@@ -25,8 +26,9 @@
     "pages/admin/token_request.js",
     "pages/admin/users.js",
     "pages/admin/users.js"
-  ],
+, "pages/users/wallet.js", "pages/users/wallet.js"  ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+ 
 }

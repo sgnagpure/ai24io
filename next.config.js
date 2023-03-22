@@ -1,6 +1,6 @@
-/** @type {import('next').NextConfig} */
 module.exports = {
   webpack5: true,
+  trailingSlash:true,
   webpack: (config) => {
     config.resolve.fallback = { fs: false, path: false };
 
@@ -13,6 +13,17 @@ module.exports = {
   eslint: {
     ignoreDuringBuilds: true,
 },
+headers: () => [
+  {
+    source: '/blog',
+    headers: [
+      {
+        key: 'Cache-Control',
+        value: 'no-store',
+      },
+    ],
+  },
+],
   exportPathMap: async function() {
     return {
       "/": { page: "/" },
@@ -41,6 +52,8 @@ module.exports = {
       "/admin/show_blogs":{page:"/admin/show_blogs"},
       "/admin/add_category":{page:"/admin/add_category"},
       "/admin/show_category":{page:"/admin/show_category"},
+
+     
       
     };
 

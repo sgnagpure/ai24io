@@ -3,6 +3,7 @@ import { DataGrid, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-g
 import Layout from '../../components/Layout';
 import Auth from '../../components/AdminAuth';
 import swal from 'sweetalert2';
+import Link from 'next/link';
 
 async function deactive_request(id) {
     let ar = {"id":id}
@@ -121,14 +122,14 @@ const columns = [
                 return (
                     <div>
                         <button onClick={() => deactive_request(params.row.id)} className='btn btn-danger'>Deactivate</button>
-                        <a href={"/admin/category/"+params.row.id} className='btn btn-warning'>Edit</a>
+                        <Link as={`/admin_category/edit?id=${params.row.id}`} href={`/admin_category/edit?id=${params.row.id}`}><a className='btn btn-warning'>Edit</a></Link>
                     </div>
                 );
                }else{
                 return (
                     <div>
                         <button onClick={() => active_request(params.row.id)} className='btn btn-success'>Activate</button>
-                        <a href={"/admin/category/"+params.row.id} className='btn btn-warning'>Edit</a>
+                        <a href={"/admin_category/edit?id="+params.row.id} className='btn btn-warning'>Edit</a>
                     </div>
                 );
                }

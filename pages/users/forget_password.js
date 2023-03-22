@@ -43,6 +43,7 @@ export default function ForgetPassword({ setToken }) {
   }
   return (
     <>
+    
         <Front>
         
             <form className="pt-3" onSubmit={handleSubmit}>

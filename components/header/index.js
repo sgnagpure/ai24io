@@ -3,6 +3,7 @@ import React from "react";
 //import "./style.css";
 import { useWeb3React } from "@web3-react/core";
 import { Injected } from "../../Helpers/Injected";
+import StructuredData from "../UserLayout/StructuredData";
 
 const Header = () => {
   
@@ -21,7 +22,12 @@ const Header = () => {
   }
 
 
+
   return (
+    <>
+    
+    
+    
     <div className="header">
        <link rel='stylesheet' href="../header/style.css"></link>
        
@@ -35,6 +41,7 @@ const Header = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 
